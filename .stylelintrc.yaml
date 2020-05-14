@@ -41,7 +41,11 @@ rules:
     - true
     - ignorePseudoElements:
         ng-deep
-  scss/at-rule-no-unknown: true
+  at-rule-no-unknown: null
+  scss/at-rule-no-unknown:
+    - true
+    - ignoreAtRules:
+      - util
   # No config allows this:
   #
   # ```scss
@@ -55,7 +59,7 @@ rules:
   scss/operator-no-unspaced: true
   shorthand-property-no-redundant-values: true
   # TODO: Enable this when not conflicting with other sass file changes.
-  # string-quotes: single
+  string-quotes: double
   unit-case: lower
   unit-no-unknown:
     - true

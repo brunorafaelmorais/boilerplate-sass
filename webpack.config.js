@@ -1,6 +1,9 @@
 const path = require('path');
 const autoprefixer = require('autoprefixer');
 const sass = require('sass');
+const util = require('postcss-utilities');
+const flexBugs = require('postcss-flexbugs-fixes');
+const mqpacker = require('css-mqpacker');
 
 module.exports = {
   entry: [
@@ -8,7 +11,7 @@ module.exports = {
     path.resolve(__dirname, 'src', 'scss', 'main.scss'),
   ],
   output: {
-    path: path.resolve(__dirname, 'assets'),
+    path: path.resolve(__dirname, 'dist'),
     filename: 'js/main.bundle.js',
   },
   module: {
@@ -27,16 +30,19 @@ module.exports = {
           {
             loader: 'postcss-loader',
             options: {
-              plugins: () => [autoprefixer()],
+              plugins: () => [
+                flexBugs(),
+                util(),
+                autoprefixer(),
+                mqpacker(),
+              ],
             },
           },
           {
             loader: 'sass-loader',
             options: {
-              // Prefer Dart Sass
               implementation: sass,
 
-              // See https://github.com/webpack-contrib/sass-loader/issues/804
               webpackImporter: false,
               sassOptions: {
                 includePaths: ['./node_modules'],
@@ -49,11 +55,31 @@ module.exports = {
         ],
       },
       {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              publicPath: (url) => `../images/${url}`,
+              outputPath: 'images',
+            },
+          },
+        ],
+      },
+      {
         test: /\.js$/,
         loader: 'babel-loader',
         query: {
           presets: ['@babel/preset-env'],
         },
+      },
+      {
+        test: /\.svg$/,
+        use: [
+          'svg-sprite-loader',
+          'svgo-loader',
+        ],
       },
     ],
   },

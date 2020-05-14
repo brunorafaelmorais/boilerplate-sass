@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SVG Icons</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
+</head>
+<body class="mdc-typography">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background-color: #f6f8fa;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      color: #424242;
+    }
+
+    #icons-container {
+      display: grid;
+      padding: 10px;
+      grid-gap: 10px;
+      grid-template-columns: repeat(3, 1fr);
+      justify-items: stretch;
+      align-items: stretch;
+    }
+
+    #icons-container > div {
+      background-color: #fff;
+      padding: 16px;
+      box-shadow: rgba(0, 0, 0, .1) 0px 1px 3px 0px, rgba(0, 0, 0, .06) 0px 1px 2px 0px;
+      border-radius: 6px;
+      border: 3px solid transparent;
+      transition: border .2s;
+      cursor: pointer;
+    }
+
+    #icons-container > div:hover {
+      border-color: #000;
+    }
+
+    #icons-container > div > svg {
+      width: 48px;
+      height: 48px;
+      display: block;
+      margin: 0 auto 16px;
+    }
+
+    #icons-container > div > span {
+      display: block;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    @media (min-width: 600px) {
+      #icons-container {
+        grid-template-columns: repeat(6, 1fr);
+      }
+    }
+
+    @media (min-width: 960px) {
+      #icons-container {
+        grid-template-columns: repeat(9, 1fr);
+      }
+    }
+  </style>
+
+  <div id="icons-container"></div>
+
+  <script src="dist/js/main.bundle.js"></script>
+  <script>
+    const iconsContainer = document.getElementById('icons-container');
+    const svgSymbolsEl = document.querySelectorAll('svg > symbol');
+
+    const svgIds = [].map.call(svgSymbolsEl, (symbol) => symbol.id);
+
+    function htmlCardIcon(iconId) {
+      return `
+        <div onclick="copyIcon('${iconId}')">
+          <svg><use xlink:href="#${iconId}" /></svg>
+          <span>${iconId}</span>
+        </div>
+      `;
+    }
+
+    iconsContainer.innerHTML = svgIds.map(htmlCardIcon).join('\n');
+
+    function showToastSuccessCopy() {
+      iziToast.show({
+        title: `Sucesso!`,
+        message: 'Ícone copiado para área de transferência.',
+        color: 'green',
+        timeout: 1500,
+        position: 'topRight',
+      });
+    }
+
+    async function copyText(text) {
+      const result = await navigator.permissions.query({ name: 'clipboard-write' });
+
+      if (result.state === 'granted' || result.state === 'prompt') {
+        navigator.clipboard.writeText(text)
+          .then(() => showToastSuccessCopy())
+          .catch(err => console.log(err));
+      }
+    }
+
+    function copyIcon(iconId) {
+      const marckupIcon = `<svg><use xlink:href="#${iconId}" /></svg>`;
+
+      copyText(marckupIcon);
+    }
+  </script>
+</body>
+</html>
