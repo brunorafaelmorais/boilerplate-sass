@@ -5,7 +5,12 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack --mode production",
-    "dev": "cross-env NODE_ENV=development webpack --mode development --watch"
+    "dev": "cross-env NODE_ENV=development webpack --mode development --watch",
+    "dev:server": "lite-server",
+    "fix:js": "eslint --fix --ext .js src/",
+    "lint:js": "eslint --ext .js src/",
+    "fix:css": "stylelint --fix \"src/**/*.scss\"",
+    "lint:css": "stylelint \"src/**/*.scss\""
   },
   "dependencies": {
     "material-components-web": "^6.0.0"
@@ -25,6 +30,7 @@
     "file-loader": "^6.0.0",
     "html-loader": "^1.1.0",
     "html-webpack-plugin": "^4.3.0",
+    "lite-server": "^2.5.4",
     "postcss-flexbugs-fixes": "^4.2.1",
     "postcss-loader": "^3.0.0",
     "postcss-utilities": "^0.8.4",
