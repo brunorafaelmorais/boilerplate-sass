@@ -1,4 +1,8 @@
-@use "./global/normalize";
-@use "./global/global";
+@use "./settings/css-variables";
 
-@use "./mdc/mdc";
+@use "./generic/normalize";
+@use "./generic/global";
+
+@use "./components/mdc/mdc";
+
+@use "./helpers/spacing";

@@ -1,0 +1,11 @@
+@use "../tools/mixins";
+
+$spacers: (
+  xs: var(--gutter-xs),
+  sm: var(--gutter-sm),
+  md: var(--gutter-md),
+  lg: var(--gutter-lg),
+  xl: var(--gutter-xl),
+);
+
+@include mixins.spacing($spacers);

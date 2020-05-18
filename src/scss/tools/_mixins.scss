@@ -1,0 +1,34 @@
+@mixin modifiers($map, $attribute, $prefix: "--", $separator: "-", $base: "base") {
+  @each $key, $value in $map {
+    &#{if($key != $base, #{$prefix}#{$key}, '')} {
+      @if type-of($value) == "map" {
+        @include modifiers($value, $attribute, $separator);
+      }
+      @else {
+        #{$attribute}: $value;
+      }
+    }
+  }
+}
+
+@mixin spacing($spacers) {
+  @each $prop, $abbrev in (margin: m, padding: p) {
+    @each $key, $value in $spacers {
+      ._#{$abbrev}y-#{$key} {
+        #{$prop}-top: $value !important;
+        #{$prop}-bottom: $value !important;
+      }
+
+      ._#{$abbrev}x-#{$key} {
+        #{$prop}-right: $value !important;
+        #{$prop}-left: $value !important;
+      }
+
+      ._#{$abbrev}-#{$key} { #{$prop}: $value !important; }
+      ._#{$abbrev}t-#{$key} { #{$prop}-top: $value !important; }
+      ._#{$abbrev}r-#{$key} { #{$prop}-right: $value !important; }
+      ._#{$abbrev}b-#{$key} { #{$prop}-bottom: $value !important; }
+      ._#{$abbrev}l-#{$key} { #{$prop}-left: $value !important; }
+    }
+  }
+}
